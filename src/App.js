@@ -80,31 +80,27 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <a href="#" className="navbar-brand" onClick={(e) => scrollToSection(e, 'hero')}>
-          VibRation Gym
-        </a>
-        
-        <ul className={`navbar-nav ${mobileMenuOpen ? 'active' : ''}`}>
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'hero')}>Home</a></li>
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'about')}>About Us</a></li>
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'classes')}>Classes</a></li>
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'trainers')}>Trainers</a></li>
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'plans')}>Plans</a></li>
+       <button className="navbar-brand" onClick={(e) => scrollToSection(e, 'hero')}>
+  <img src="/logo.jpg" alt="VibRation Gym Logo" className="logo-img" />
+  
+</button>
 
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'gallery')}>Gallery</a></li>
-          <li><a href="#" onClick={(e) => scrollToSection(e, 'contact')}>Contact</a></li>
-        </ul>
+<ul className={`navbar-nav ${mobileMenuOpen ? 'active' : ''}`}>
+  <li><button onClick={(e) => scrollToSection(e, 'hero')}>Home</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'about')}>About Us</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'classes')}>Classes</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'trainers')}>Trainers</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'plans')}>Plans</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'gallery')}>Gallery</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'contact')}>Contact</button></li>
+</ul>
+
+<button className="join-btn" onClick={(e) => scrollToSection(e, 'contact')}>
+  Join Now
+</button>
+
         
-        <a href="#" className="join-btn" onClick={(e) => scrollToSection(e, 'contact')}>
-          Join Now
-        </a>
-        
-        <button 
-          className="mobile-menu-btn"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
-        </button>
+       
       </div>
     </nav>
   );

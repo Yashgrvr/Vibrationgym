@@ -438,79 +438,73 @@ const Contact = () => {
   };
 
   // Enhanced form submission with multiple integration options
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateForm()) {
-      setSubmitStatus('error');
-      setSubmitMessage('Please fix the errors below and try again.');
-      return;
-    }
+  // Step 1: Validate form first
+  if (!validateForm()) {
+    setSubmitStatus('error');
+    setSubmitMessage('Please fix the errors below and try again.');
+    return;
+  }
 
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+  // Step 2: Set loading state
+  setIsSubmitting(true);
+  setSubmitStatus(null);
 
-    try {
-      // Option 1: Netlify Forms (recommended for your setup)
-      const netlifyResponse = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'contact',
-          ...formData,
-          // Add timestamp and additional tracking
-          'submitted_at': new Date().toISOString(),
-          'page_url': window.location.href
-        }).toString()
+  try {
+    // Step 3: Send form data to Netlify
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        // ✅ Explicitly list each field (don't use spread operator)
+        'form-name': 'contact',           // Required by Netlify
+        'name': formData.name,            // User's name
+        'email': formData.email,          // User's email
+        'phone': formData.phone,          // User's phone
+        'message': formData.message,      // User's message
+        'interest': formData.interest,    // What they're interested in
+        'source': formData.source,        // Where they came from
+        'submitted_at': new Date().toISOString() // Timestamp
+      }).toString()
+    });
+
+    // Step 4: Check if submission was successful
+    if (response.ok) {
+      // ✅ Success - show success message
+      setSubmitStatus('success');
+      setSubmitMessage('Thank you for your interest in VibRation Gym! We will contact you within 24 hours to discuss your fitness goals.');
+      
+      // ✅ Reset the form to empty state
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+        interest: 'membership',
+        source: 'website'
       });
+      
+      // Clear any validation errors
+      setErrors({});
 
-      if (netlifyResponse.ok) {
-        // Success handling
-        setSubmitStatus('success');
-        setSubmitMessage('Thank you for your interest in VibRation Gym! We will contact you within 24 hours to discuss your fitness goals.');
-
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          message: '',
-          interest: 'membership',
-          source: 'website'
-        });
-
-        // Clear errors
-        setErrors({});
-
-        // Optional: Track conversion event (Google Analytics, etc.)
-        if (window.gtag) {
-          window.gtag('event', 'form_submit', {
-            event_category: 'engagement',
-            event_label: 'contact_form',
-            value: 1
-          });
-        }
-
-        // Auto-scroll to success message
-        setTimeout(() => {
-          document.getElementById('contact').scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
-        }, 100);
-
-      } else {
-        throw new Error('Network response was not ok');
-      }
-
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setSubmitStatus('error');
-      setSubmitMessage('Sorry, there was a problem sending your message. Please try again or call us directly at ' + gymData.contact.phones[0] + '.');
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+  } catch (error) {
+    
+    console.error('Form submission error:', error);
+    setSubmitStatus('error');
+    setSubmitMessage('Sorry, there was a problem sending your message. Please try again or call us directly at 9911979682.');
+  } finally {
+    
+    setIsSubmitting(false);
+  }
+};
+
 
   // Format phone number as user types
   const formatPhoneNumber = (value) => {
@@ -597,7 +591,19 @@ const Contact = () => {
           </div>
 
           {/* Enhanced Contact Form */}
-          <form className="contact-form" onSubmit={handleSubmit} noValidate>
+          <form 
+  className="contact-form" 
+  onSubmit={handleSubmit} 
+  noValidate
+  name="contact"
+  method="POST"
+  data-netlify="true"
+  data-netlify-honeypot="bot-field"
+>
+  <input type="hidden" name="form-name" value="contact" />
+  <input type="hidden" name="bot-field" />
+
+
             <h3>Send Message</h3>
 
             {/* Status Messages */}

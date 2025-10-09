@@ -1,5 +1,9 @@
 import React from 'react';
 import './App.css';
+// At the top with other imports
+import Media from './Media';
+
+
 const { useState, useEffect } = React;
 
 
@@ -10,7 +14,7 @@ const gymData = {
   contact: {
     address: "A-1/10, 4th Floor, Sector-8, Near M2K, Rohini, Delhi 110085",
     phones: ["9911979682", "9266237450"],
-    email: "groveryash1234@gmail.com",
+    email: "pantmukesh2986@gmail.com",
     hours: {
       morning: "6:00 AM - 12:00 PM",
       evening: "4:00 PM - 10:00 PM"
@@ -25,13 +29,7 @@ const gymData = {
     {name: "Mukesh Pant", specialty: "Strength & Yoga Expert", bio: "Experienced fitness trainer specializing in strength training, weight management, and yoga. Dedicated to helping clients achieve their fitness goals through personalized workout plans."},
     {name: "Aditya Singh", specialty: "Zumba & CrossFit Coach", bio: "Certified personal trainer with expertise in Zumba, CrossFit workouts, and functional training. Passionate about motivating clients to reach their full potential."}
   ],
-  specialOffer: {
-    title: "BIG Festival Offer",
-    subtitle: "For New Membership",
-    details: "4 Month Membership",
-    price: "₹4,500",
-    originalPrice: "₹7,000"
-  },
+  
   membershipPlans: [
     {duration: "Monthly", price: "₹2,500", popular: false},
     {duration: "3 Month", price: "₹5,500", popular: false},
@@ -39,18 +37,11 @@ const gymData = {
     {duration: "12 Month", price: "₹12,000", popular: false}
   ],
   services: ["Special Counselling", "Personalized Diet Plans"],
-  galleryItems: [
-    {name: "Weight Training Area", icon: "dumbbell"},
-    {name: "Yoga Zone", icon: "leaf"},
-    {name: "Reception Area", icon: "door-open"},
-    {name: "Cardio Zone", icon: "heart"},
-    {name: "Dance Floor", icon: "music"},
-    {name: "Locker Room", icon: "lock"}
-  ],
+
   socialMedia: {
     facebook: "#",
-    instagram: "#",
-    whatsapp: "#",
+    instagram: "https://www.instagram.com/vibrationfitness1/",
+    whatsapp: "https://wa.me/919266237450",
     youtube: "#"
   }
 };
@@ -89,11 +80,11 @@ const Navbar = () => {
   <li><button onClick={(e) => scrollToSection(e, 'hero')}>Home</button></li>
   <li><button onClick={(e) => scrollToSection(e, 'about')}>About Us</button></li>
   <li><button onClick={(e) => scrollToSection(e, 'classes')}>Classes</button></li>
-  <li><button onClick={(e) => scrollToSection(e, 'trainers')}>Trainers</button></li>
+  <li><button onClick={(e) => scrollToSection(e, 'media')}>Photos</button></li>  
   <li><button onClick={(e) => scrollToSection(e, 'plans')}>Plans</button></li>
-  <li><button onClick={(e) => scrollToSection(e, 'gallery')}>Gallery</button></li>
   <li><button onClick={(e) => scrollToSection(e, 'contact')}>Contact</button></li>
 </ul>
+
 
 <button className="join-btn" onClick={(e) => scrollToSection(e, 'contact')}>
   Join Now
@@ -143,7 +134,7 @@ const About = () => {
           <p className="section-subtitle">
             Welcome to VibRation Gym & Fitness Centre, where we believe in building not just your body, 
             but your confidence too. Located in the heart of Rohini, Delhi, we provide a premium fitness 
-            experience with state-of-the-art equcipment and expert trainers.
+            experience with state-of-the-art equipment and expert trainers.
           </p>
           
           <div className="about-features">
@@ -170,6 +161,14 @@ const About = () => {
               <h4>Flexible Hours</h4>
               <p>Open morning and evening to fit your busy schedule</p>
             </div>
+            <div className="feature-card">
+  <div className="feature-icon">
+    <i className="fas fa-apple-alt"></i>
+  </div>
+  <h4>Nutrition Guidance</h4>
+  <p>Expert diet counseling and meal plans to complement your fitness goals</p>
+</div>
+
           </div>
         </div>
       </div>
@@ -291,42 +290,7 @@ const Plans = () => {
   );
 };
 
-// Gallery Component
-const Gallery = () => {
-  const getIconClass = (icon) => {
-    const iconMap = {
-      dumbbell: 'fa-dumbbell',
-      leaf: 'fa-leaf',
-      'door-open': 'fa-door-open',
-      heart: 'fa-heart',
-      music: 'fa-music',
-      lock: 'fa-lock'
-    };
-    return iconMap[icon] || 'fa-image';
-  };
 
-  return (
-    <section id="gallery" className="section gallery">
-      <div className="container">
-        <h2 className="section-title">Our Facilities</h2>
-        <p className="section-subtitle">
-          Explore our modern and well-equipped fitness facilities
-        </p>
-        
-        <div className="gallery-grid">
-          {gymData.galleryItems.map((item, index) => (
-            <div key={index} className="gallery-item">
-              <div className="gallery-icon">
-                <i className={`fas ${getIconClass(item.icon)}`}></i>
-              </div>
-              <h4>{item.name}</h4>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 // Contact Component
 
@@ -762,15 +726,13 @@ const Contact = () => {
 
         {/* WhatsApp Quick Contact */}
         <div className="whatsapp-contact">
-          <a
-            
-  href={`https://wa.me/91${gymData.contact.phones[0].replace(/[^0-9]/g, '')}?text=Hi! I'm interested in VibRation Gym membership.`}
+         <a
+  href="https://wa.me/919266237450?text=Hi! I'm interested in VibRation Gym membership."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="whatsapp-btn"
+>
 
-
-            target="_blank"
-            rel="noopener noreferrer"
-            className="whatsapp-btn"
-          >
             <i className="fab fa-whatsapp"></i>
             <span>Quick Chat on WhatsApp</span>
           </a>
@@ -855,15 +817,15 @@ const App = () => {
       <Hero />
       <About />
       <Classes />
-      <Trainers />
+      <Media />        {/* ← Move this above Plans */}
       <Offers />
-      <Plans />
-      <Gallery />
+      <Plans />        {/* ← Plans now comes after Media */}
       <Contact />
       <Footer />
       <FloatingJoinButton />
     </div>
   );
 };
+
 
 export default App;
